@@ -9,9 +9,11 @@ const loadDetails = () => {
     .then(jsonData => {
         jsonData.json()
         .then(data => {
-            console.log(data)
-            details.value = data.items
+            const validData = data.items.filter(item => item.productDetails && item.productDetails.length > 0)
+            console.log(validData)
+            details.value = validData
         })
+        // Filter so that we only get items with products and we merge the titles of those products
     })
 }
 
