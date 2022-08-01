@@ -1,5 +1,11 @@
 <script setup>
 import Advisory from './Advisory.vue'
+import {ref} from 'vue'
+
+const pageNumber = ref(1)
+const itemsPerPage = 5
+const maxPages = 10
+
 defineProps({
   items: {
     type: Array,
@@ -9,11 +15,35 @@ defineProps({
 
 const getProductsDisplayName = (productDetails) => {
   return productDetails.map(entry => entry.productName).join(", ")
+} 
+
+const getItemsForCurrentPage = (items) => {
+  // -1 to offset that we number pages from 1 but arrays index from 0
+  return items.slice((pageNumber.value - 1) * itemsPerPage, pageNumber.value * itemsPerPage)
 }
+
 </script>
 
 <template>
-    <template v-for="item in items" :key="item['@id']">
+  <div style="min-height: 100vh;">
+    <div class="q-pa-lg">
+      <div>
+      <template v-for="item in getItemsForCurrentPage(items)" :key="item['@id']">
         <Advisory :date="item.created" :product="getProductsDisplayName(item.productDetails)" :riskStatement="item.problem[0].riskStatement"/>
-    </template>
+      </template>
+    </div>
+      <q-pagination
+      v-model="pageNumber"
+      :max="items.length > maxPages ? maxPages : items.length"
+      ></q-pagination>
+    </div>
+  </div>
+  
 </template>
+
+<style scoped>
+q-pagination {
+  display: inline
+}
+
+</style>

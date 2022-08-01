@@ -1,20 +1,29 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import AdvisoriesPanel from './components/AdvisoriesPanelWrapper.vue';
+
+import AdvisoriesPanelWrapper from './components/AdvisoriesPanelWrapper.vue';
+import SearchBar from './components/SearchBar.vue';
+import {ref} from 'vue'
+
+const currentSearchTerm = ref("")
+
+const searchActivated = (searchTerm) => {
+  currentSearchTerm.value = searchTerm;
+}
+
+const searchCleared = () => {
+  currentSearchTerm.value = "";
+}
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
+    <h1>UK Food Advisories</h1>
   </header>
 
   <main>
-    <AdvisoriesPanel/>
+    <p>Check out the latest UK food advisories below or search for a particular type of food.</p>
+    <SearchBar @searchActivated="searchActivated" @searchCleared="searchCleared"/>
+    <AdvisoriesPanelWrapper :searchTerm="currentSearchTerm"/>
   </main>
 </template>
 
@@ -58,21 +67,15 @@ a,
   }
 
   #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: inline;
+    
     padding: 0 2rem;
   }
 
   header {
-    display: flex;
+    display: inline;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
   }
 
   .logo {

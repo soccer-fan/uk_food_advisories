@@ -1,7 +1,7 @@
 <script setup>
 defineProps({
   date: {
-    type: Date,
+    type: String,
     required: true
   },
   product: {
@@ -17,7 +17,7 @@ defineProps({
 
 <template>
     <div class="advisory">
-        <h1>{{product}}</h1>
+        <h4>{{date}}: {{product}}</h4>
         <p>{{riskStatement}}</p>
     </div>
 </template>

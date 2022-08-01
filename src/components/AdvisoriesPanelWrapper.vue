@@ -1,11 +1,21 @@
 <script setup>
 import Advisory from './Advisory.vue';
 import AdvisoriesPanel from './AdvisoriesPanel.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, watch, ref } from 'vue';
+
+const props = defineProps({
+  searchTerm: {
+    type: String,
+    required: true
+  }
+})
+
 const details = ref([])
 
-const loadDetails = () => {
-    fetch("https://data.food.gov.uk/food-alerts/id?_limit=1000")
+const loadDetails = (searchTerm) => {
+    details.value = []
+    const queryParams = props.searchTerm != "" ? `search=${props.searchTerm}&` : ""
+    fetch(`https://data.food.gov.uk/food-alerts/id?${queryParams}_limit=100&_sort=-created`)
     .then(jsonData => {
         jsonData.json()
         .then(data => {
@@ -20,6 +30,11 @@ const loadDetails = () => {
 onMounted(() => {
     loadDetails()
 })
+
+watch(props, () => {
+    loadDetails()
+})
+
 </script>
 
 <template>
