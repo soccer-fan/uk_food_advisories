@@ -11,17 +11,18 @@ const props = defineProps({
 })
 
 const details = ref([])
+const isLoading = ref(true)
 
 const loadDetails = (searchTerm) => {
-    details.value = []
+    isLoading.value = true
     const queryParams = props.searchTerm != "" ? `search=${props.searchTerm}&` : ""
-    fetch(`https://data.food.gov.uk/food-alerts/id?${queryParams}_limit=100&_sort=-created`)
+    fetch(`https://data.food.gov.uk/food-alerts/id?${queryParams}_limit=200&_sort=-created`)
     .then(jsonData => {
         jsonData.json()
         .then(data => {
             const validData = data.items.filter(item => item.productDetails && item.productDetails.length > 0)
-            console.log(validData)
             details.value = validData
+            isLoading.value = false
         })
         // Filter so that we only get items with products and we merge the titles of those products
     })
@@ -38,6 +39,6 @@ watch(props, () => {
 </script>
 
 <template>
-    <AdvisoriesPanel v-if="details.length != 0" :items="details"/>
+    <AdvisoriesPanel v-if="isLoading === false" :items="details"/>
     <h1 v-else>Loading...</h1>
 </template>

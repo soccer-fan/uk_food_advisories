@@ -14,7 +14,7 @@ const clearSearchTermFromUI = () => {
 </script>
 
 <template>
-    <input v-model="searchTerm" placeholder="Enter search term here" />
+    <input v-model="searchTerm" @keyup.enter="$emit('searchActivated', searchTerm)" placeholder="Enter search term here" />
     <button @click="$emit('searchActivated', searchTerm)">Search!</button>
     <button @click="clearSearchTermFromUI">Clear search term</button>
 </template>

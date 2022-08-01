@@ -25,7 +25,7 @@ const getItemsForCurrentPage = (items) => {
 </script>
 
 <template>
-  <div style="min-height: 100vh;">
+  <div style="min-height: 100vh;" v-if="items.length > 0">
     <div class="q-pa-lg">
       <div>
       <template v-for="item in getItemsForCurrentPage(items)" :key="item['@id']">
@@ -38,6 +38,7 @@ const getItemsForCurrentPage = (items) => {
       ></q-pagination>
     </div>
   </div>
+  <h2 v-else>No results found</h2>
   
 </template>
 
