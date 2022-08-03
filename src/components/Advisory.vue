@@ -1,3 +1,5 @@
+<!-- Represents an individual advisory item -->
+
 <script setup>
 defineProps({
   date: {
